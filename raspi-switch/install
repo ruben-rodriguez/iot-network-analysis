@@ -1,0 +1,48 @@
+#!/bin/env/bash
+
+#Check if run as root
+if [ "$UID" -ne 0 ] ; then
+	echo "Run again as sudo!"
+	exit 1
+fi
+
+echo "Checking connectivity...\n"
+wget -q --tries=5 --timeout=20 --spider http://google.com
+if [[ $? -eq 0 ]]; then
+        echo "OK"
+else
+        echo "NO NETWORK: EXITING"
+		exit
+fi
+
+echo "\nUpdating packages database..."
+apt-get update
+
+echo "Installing required packages..."
+apt-get install -y bridge-utils hostapd
+
+echo "\nCopying config file under /etc/hostapd/hostapd.conf"
+cp hostapd.conf /etc/hostapd/hostapd.conf
+
+echo "Setting interfaces config, backup at /etc/network/interfaces.backup"
+cp /etc/network/interfaces /etc/network/interfaces.backup
+cp interfaces /etc/network/interfaces
+
+echo "Disabling and enabling networking releated services..."
+systemctl disable dhcpcd
+systemctl stop networking 
+
+systemctl unmask hostapd
+systemctl start hostapd
+systemctl start networking
+
+systemctl enable hostapd
+systemctl enable networking
+
+echo "Modifying kernel routes..."
+route add default gw 192.168.1.1 br0
+route del default gw 192.168.1.1 eth0
+
+echo "\nSome bridge control commands to check the status:"
+brctl show
+brctl showstp br0

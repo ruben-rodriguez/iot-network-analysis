@@ -1,0 +1,9 @@
+#!/bin/env/bash
+
+# Enable modules to be able to use nRF BLE dongle
+modprobe usbserial
+modprobe cp210x
+
+wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/Desktop-software/nRF-Sniffer/sw/nrf_sniffer_for_bluetooth_le_4.0.0.zip
+
+pip install psutil pyserial serial

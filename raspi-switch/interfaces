@@ -1,0 +1,34 @@
+# interfaces(5) file used by ifup(8) and ifdown(8)
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+auto lo
+iface lo inet loopback
+
+# Using 3 ports (built-in + 2 usb dongles) and wlan0
+allow-hotplug eth0
+iface eth0 inet manual
+   pre-up   ifconfig $IFACE up
+   pre-down ifconfig $IFACE down
+ 
+allow-hotplug eth1
+iface eth1 inet manual
+   pre-up   ifconfig $IFACE up
+   pre-down ifconfig $IFACE down
+ 
+allow-hotplug eth2
+iface eth2 inet manual
+   pre-up   ifconfig $IFACE up 
+   pre-down ifconfig $IFACE down
+ 
+allow-hotplug wlan0
+iface wlan0 inet manual
+ up hostapd -B /etc/hostapd/hostapd.conf
+
+auto br0
+iface br0 inet static
+  bridge_ports eth0 eth1 eth2 wlan0
+  address 192.168.1.156
+  broadcast 192.168.1.255
+  netmask 255.255.255.0

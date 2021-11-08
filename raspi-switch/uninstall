@@ -1,0 +1,35 @@
+#!/bin/env/bash
+
+#Check if run as root
+if [ "$UID" -ne 0 ] ; then
+	echo "Run again as sudo!"
+	exit 1
+fi
+
+echo "\nStopping hostapd..."
+systemctl stop hostapd
+
+echo "Restoring interfaces backup /etc/network/interfaces.backup"
+cp /etc/network/interfaces.backup /etc/network/interfaces
+
+echo "Delete br0 interface"
+ip link delete br0
+
+echo "Restart networking releated services..."
+systemctl disable dhcpcd
+systemctl stop networking 
+
+systemctl unmask hostapd
+systemctl start hostapd
+systemctl start networking
+
+systemctl enable hostapd
+systemctl enable networking
+
+echo "Modifying kernel routes..."
+route add default gw 192.168.1.1 br0
+route del default gw 192.168.1.1 eth0
+
+echo "\nSome bridge control commands to check the status:"
+brctl show
+brctl showstp br0
