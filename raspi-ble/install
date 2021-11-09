@@ -6,4 +6,5 @@ modprobe cp210x
 
 wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/Desktop-software/nRF-Sniffer/sw/nrf_sniffer_for_bluetooth_le_4.0.0.zip
 
+# Install plugin requirements.
 pip install psutil pyserial serial

@@ -11,6 +11,12 @@ This was tested using Kali Linux
 sudo ./install
 ```
 
+Configuration can be reverted levaraging uninstall script:
+
+```
+sudo ./uninstall
+```
+
 # References
 
 - [Configuring hostapd on Raspberry Pi](https://hawksites.newpaltz.edu/myerse/2018/06/08/hostapd-on-raspberry-pi/comment-page-1/)
