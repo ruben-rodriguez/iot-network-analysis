@@ -1,4 +1,4 @@
-#!/bin/env/bash
+#!/bin/env bash
 
 # Enable modules to be able to use nRF BLE dongle
 modprobe usbserial
