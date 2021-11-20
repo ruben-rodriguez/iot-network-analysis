@@ -1,0 +1,15 @@
+GET joy/_search
+{
+  "size": 0,
+  "aggs": {
+    "table": {
+      "composite": {
+        "size": 10,
+        "sources": [
+          {"stk1": {"terms": {"field": "da"}}},
+          {"stk2": {"terms": {"field": "sa"}}}
+        ]
+      }
+    }
+  }
+}
