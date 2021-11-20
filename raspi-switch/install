@@ -6,7 +6,7 @@ if [ "$UID" -ne 0 ] ; then
 	exit 1
 fi
 
-echo "Checking connectivity...\n"
+echo "Checking connectivity..."
 wget -q --tries=5 --timeout=20 --spider http://google.com
 if [[ $? -eq 0 ]]; then
         echo "OK"
