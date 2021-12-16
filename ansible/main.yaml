@@ -1,0 +1,4 @@
+- import_playbook: install-elk.yaml
+- import_playbook: configure-elk.yaml
+- import_playbook: install-joy.yaml
+- import_playbook: install-mercury.yaml
