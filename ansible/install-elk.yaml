@@ -1,0 +1,47 @@
+---
+# Install and setup ELK stack
+
+- name: Install and setup ELK stack
+  hosts: all
+  become: yes
+  tasks:
+  
+  - name: Add Elastic keys
+    ansible.builtin.apt_key:
+      url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      state: present
+
+  - name: Add Elastic repository into sources list
+    ansible.builtin.apt_repository:
+      repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+      state: present
+
+  - name: Install required packages
+    apt:
+      pkg: 
+        - openjdk-8-jdk
+        - nginx
+        - apt-transport-https
+        - elasticsearch
+        - logstash
+        - kibana
+      update_cache: yes
+      state: latest
+
+  - name: Restart Elastic service
+    service:
+      name: elasticsearch
+      enabled: yes
+      state: started
+
+  - name: Restart Kibana service
+    service:
+      name: kibana
+      enabled: yes
+      state: started
+
+  - name: Restart Logstash service
+    service:
+      name: logstash
+      enabled: yes
+      state: started

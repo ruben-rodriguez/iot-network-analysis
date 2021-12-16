@@ -1,0 +1,36 @@
+---
+# Install cisco Mercury https://github.com/cisco/mercury
+
+- name: Install Cisco mercury
+  hosts: all
+  tasks:
+
+  - name: Install required packages
+    become: yes
+    apt:
+      pkg: 
+        - build-essential 
+        - libssl-dev 
+        - libpcap-dev 
+        - libcurl4-openssl-dev 
+        - libz-dev 
+        - python2 
+        - python-dev 
+      update_cache: yes
+      state: latest
+
+  - name: Clone Mercury github repository
+    vars:
+      local_shell:  "{{ lookup('env','SHELL') }}"
+    git:
+      repo: https://github.com/cisco/mercury.git
+      dest: ~/mercury
+      clone: yes
+      update: yes
+
+  - name: Configure and build
+    command: chdir=~/mercury ./configure
+       
+  - name: Build the default target
+    make:
+      chdir: ~/mercury

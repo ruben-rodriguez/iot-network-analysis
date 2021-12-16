@@ -1,0 +1,43 @@
+---
+# Install cisco Joy https://github.com/cisco/joy
+
+- name: Install Cisco Joy
+  hosts: all
+  tasks:
+
+  - name: Install required packages
+    become: yes
+    apt:
+      pkg: 
+        - build-essential 
+        - libssl-dev 
+        - libpcap-dev 
+        - libcurl4-openssl-dev 
+        - libz-dev 
+        - python2 
+        - python-dev 
+      update_cache: yes
+      state: latest
+
+  - name: Clone joy github repository
+    vars:
+      local_shell:  "{{ lookup('env','SHELL') }}"
+    git:
+      repo: https://github.com/cisco/joy.git
+      dest: ~/joy
+      clone: yes
+      update: yes
+
+  - name: Configure and build
+    command: chdir=~/joy ./configure --enable-gzip
+       
+  - name: Build clean target
+    make:
+      target: clean
+      chdir: ~/joy
+
+  - name: Build the default target
+    become: yes
+    make:
+      target: install
+      chdir: ~/joy

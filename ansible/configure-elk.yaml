@@ -1,0 +1,68 @@
+---
+# Configure ELK stack
+
+- name: Configure ELK stack
+  hosts: all
+  tasks:
+
+  - name: Copy Elasticsearch configuration file
+    become: yes
+    ansible.builtin.copy:
+      src: ../elk-stack/config/elasticsearch/elasticsearch.yml
+      dest: /etc/elasticsearch/elasticsearch.yml
+      owner: root
+      group: elasticsearch
+      mode: '0660'
+
+  - name: Copy Kibana configuration file
+    become: yes
+    ansible.builtin.copy:
+      src: ../elk-stack/config/kibana/kibana.yml
+      dest: /etc/kibana/kibana.yml
+      owner: root
+      group: kibana
+      mode: '0660'
+
+  - name: Copy Logstash pipelines configuration file
+    become: yes
+    ansible.builtin.copy:
+      src: ../elk-stack/config/logstash/pipelines.yml
+      dest: /etc/logstash/pipelines.yml
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Copy Logstash pipelines definition file
+    become: yes
+    ansible.builtin.copy:
+      src: ../elk-stack/config/logstash/joy.conf
+      dest: /etc/logstash/conf.d/joy.conf
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Restart Elastic service
+    become: yes
+    service:
+      name: elasticsearch
+      state: restarted
+
+  - name: Restart Kibana service
+    become: yes
+    service:
+      name: kibana
+      state: restarted
+
+  - name: Restart Logstash service
+    become: yes
+    service:
+      name: logstash
+      state: restarted
+
+  - name: Update Elastic template
+    uri:
+      url: http://localhost:9200/_index_template/joy_template
+      method: PUT
+      body_format: json
+      src: ../elk-stack/config/elasticsearch/joy_template.json
+      
