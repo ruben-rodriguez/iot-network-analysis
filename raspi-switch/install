@@ -27,7 +27,6 @@ cp hostapd.conf /etc/hostapd/hostapd.conf
 echo "Setting interfaces config, backup at /etc/network/interfaces.backup"
 cp /etc/network/interfaces /etc/network/interfaces.backup
 cp bridge-interfaces /etc/network/interfaces
-ifconfig eth0 0.0.0.0
 
 echo "Disabling and enabling networking releated services..."
 systemctl stop networking 
@@ -39,6 +38,7 @@ systemctl start networking
 echo "Modifying kernel routes..."
 route add default gw 192.168.1.1 br0
 route del default gw 192.168.1.1 eth0
+ifconfig eth0 0.0.0.0
 
 echo "Some bridge control commands to check the status:"
 brctl show
