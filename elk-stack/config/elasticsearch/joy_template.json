@@ -11,7 +11,7 @@
       "properties": {
         "da": { "type": "ip"},
         "sa": { "type": "ip"},
-        "geo" : {
+        "geo-da" : {
           "properties" : {
               "as_org" : { "type" : "keyword" },
               "asn" : { "type" : "keyword" },
@@ -29,7 +29,26 @@
               "longitude" : { "type" : "float" },
               "timezone" : { "type" : "keyword" }
           }
-      }
+        },
+        "geo-sa" : {
+          "properties" : {
+              "as_org" : { "type" : "keyword" },
+              "asn" : { "type" : "keyword" },
+              "country_code2" : { "type" : "keyword" },
+              "country_code3" : { "type" : "keyword" },
+              "country_name" : { "type" : "keyword" },
+              "continent_code" : { "type" : "keyword" },
+              "city_name" : { "type" : "keyword" },
+              "region_code" : { "type" : "keyword" },
+              "region_name" : { "type" : "keyword" },
+              "postal_code" : { "type" : "keyword" },
+              "ip" : { "type" : "ip" },
+              "location" : { "type" : "geo_point" },
+              "latitude" : { "type" : "float" },
+              "longitude" : { "type" : "float" },
+              "timezone" : { "type" : "keyword" }
+          }
+        }
       }
     }
   },
