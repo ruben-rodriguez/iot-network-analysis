@@ -1,0 +1,16 @@
+# This is a template of a hosts file for ansible authentication
+
+# Host name or IP
+# SSH authentication must be set up on the machine executing ansible.
+
+server
+
+######
+# Authentication parameters for ansible password based authentication
+# sshpass is required to use this type of authentication
+
+# [all:vars]
+# ansible_connection=ssh
+# ansible_user=user
+# ansible_password=password
+# ansible_sudo_pass=password
